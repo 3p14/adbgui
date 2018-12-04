@@ -23,7 +23,7 @@ ipcMain.on('adbSwipe', (event, x1, y1, x2, y2) => {
 });
 
 ipcMain.on('adbConnect', (event, ip, port) => {
-    let data = execSync("adb kill-server && adb connect 192.168.1.5");
+    let data = execSync(`adb kill-server && adb connect ${ip}:${port}`);
     mainWindow.webContents.send('connect', data);
     if (data.includes('connected')) {
         captureScreen();
@@ -52,8 +52,10 @@ app.on('ready', () => {
         show: false,
         width: 720,
         height: 480,
+        resizable: false,
         center: true
     });
+    mainWindow.setFullScreenable(false);
     mainWindow.loadURL('file://'+__dirname+'/index.html');
     mainWindow.once('ready-to-show', () => {
         mainWindow.show();

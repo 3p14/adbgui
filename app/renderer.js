@@ -6,7 +6,7 @@ var data = {
     connected: 0,
     errmsg: null,
     androidAddr: '',
-    androidPort: 5555
+    androidPort: null
 };
 
 var app = new Vue({
@@ -14,7 +14,6 @@ var app = new Vue({
     data: data,
     methods: {
         androidReturn: function(event) {
-            console.log(event);
             ipcRenderer.send('adbReturn');
             return false;
         },
@@ -34,7 +33,7 @@ var app = new Vue({
         },
         androidConnect: function() {
             this.connectProgress = 'connecting...';
-            ipcRenderer.send('adbConnect');
+            ipcRenderer.send('adbConnect', this.androidAddr, this.androidPort || 5555);
         }
     }
 });

@@ -4,21 +4,43 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>ADB GUI</title>
+        <link rel="stylesheet" href="bulma.min.css" type="text/css">
         <link rel="stylesheet" href="style.css" type="text/css">
     </head>
     <body>
         <div id="app" class="screen">
             <img v-if="connected && image" draggable="false" :src="image" @click.right="androidReturn" @mousedown.left="androidSwipeStart" @mouseup.left="androidSwipeStop" alt="image" />
-            <div v-else id="adb">
-                <section>
-                    <img src="../images/Android-320x320.png" width="80" height="80" alt="adb" />
-                </section>
-                    <input v-model="androidAddr" type="text" placeholder="192.168.1.2" required />
-                    <input v-model.number="androidPort" type="number" placeholder="5555" />
-                    <button @click="androidConnect">{{ connectProgress }}</button>
-                <section>
-
-                </section>
+            <div v-else id="adb" class="hero">
+                <div class="hero-body">
+                    <div class="container">
+                        <div class="columns is-centered">
+                            <div class="column is-mobile">
+                                <form class="box">
+                                    <div class="field has-text-centered">
+                                        <img src="../images/Android-320x320.png" width="120" height="120" />
+                                    </div>
+                                    <div class="field">
+                                        <label class="label">IP/Domain</label>
+                                        <div class="control">
+                                            <input v-model="androidAddr" type="text" class="input" placeholder="e.g. 192.168.1.100" required>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label">Port</label>
+                                        <div class="control">
+                                            <input v-model.number="androidPort" type="number" class="input" placeholder="e.g. 5555">
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <button class="button is-success" @click.prevent="androidConnect">
+                                            {{ connectProgress }}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <script src="vue.min.js"></script>
