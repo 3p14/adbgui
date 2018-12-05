@@ -1,5 +1,6 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
 const {exec, execSync} = require('child_process');
+const path = require('path');
 
 let mainWindow = null;
 
@@ -17,6 +18,10 @@ ipcMain.on('adbTap', (event, x, y) => {
 ipcMain.on('adbReturn', () => {
     execSync("adb shell input keyevent 4");
 });
+
+ipcMain.on('adbHome', () => {
+    execSync("adb shell input keyevent 3");
+})
 
 ipcMain.on('adbSwipe', (event, x1, y1, x2, y2) => {
     execSync(`adb shell input swipe ${x1} ${y1} ${x2} ${y2}`);
@@ -51,7 +56,7 @@ app.on('ready', () => {
     mainWindow = new BrowserWindow({
         show: false,
         width: 720,
-        height: 480,
+        height: 580,
         resizable: false,
         center: true
     });

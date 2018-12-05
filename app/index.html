@@ -9,7 +9,21 @@
     </head>
     <body>
         <div id="app" class="screen">
-            <img v-if="connected && image" draggable="false" :src="image" @click.right="androidReturn" @mousedown.left="androidSwipeStart" @mouseup.left="androidSwipeStop" alt="image" />
+            <div v-if="connected && image">
+                <img width="720" height="480" draggable="false" :src="image" @click.right="androidReturn" @mousedown.left="androidSwipeStart" @mouseup.left="androidSwipeStop" alt="image" />
+                <div class="level is-mobile">
+                    <div class="level-left">
+                        <div class="container">
+                            <img src="../images/icons8-back-60.png" alt="BACK" class="level-item">
+                        </div>
+                    </div>
+                    <div class="level-right">
+                        <div class="container">
+                            <img src="../images/icons8-home-60.png" alt="HOME" class="level-item">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div v-else id="adb" class="hero">
                 <div class="hero-body">
                     <div class="container">
