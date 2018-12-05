@@ -5,6 +5,7 @@ var data = {
     connectProgress: 'connect',
     connected: 0,
     errmsg: null,
+    secure: true,
     androidAddr: '',
     androidPort: null
 };
@@ -15,14 +16,22 @@ var app = new Vue({
     methods: {
         androidReturn: function(event) {
             ipcRenderer.send('adbReturn');
-            return false;
+        },
+        androidHome: function() {
+            ipcRenderer.send('adbHome');
+        },
+        androidInstall: function() {
+            ipcRenderer.send('adbInstall');
+        },
+        androidSecure: function() {
+            ipcRenderer.send('adbSecure', !this.secure);
         },
         androidSwipeStart: function(event) {
             this.X = event.clientX;
             this.Y = event.clientY;
         },
         androidSwipeStop: function(event) {
-            if (event.ctrlKey || event.which != 1) {
+            if (event.which != 1) {
                 return;
             }
             if (Math.abs(event.clientX-this.X) > 15 || Math.abs(event.clientY-this.Y) > 15) {
@@ -53,4 +62,9 @@ ipcRenderer.on('connect', (event, response) => {
     } else {
         data.errmsg = response;
     }
+});
+
+ipcRenderer.on('secure', (event, secure) => {
+    console.log(secure);
+    data.secure = secure;
 })

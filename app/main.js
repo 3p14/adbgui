@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain} = require('electron');
+const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const {exec, execSync} = require('child_process');
 const path = require('path');
 
@@ -8,7 +8,7 @@ let prev = 0;
 let curr = 0;
 
 ipcMain.on('clean', () => {
-    execSync(`rm -rf images/screen${prev}.png`);
+    exec(`rm -rf images/screen${prev}.png`);
 })
 
 ipcMain.on('adbTap', (event, x, y) => {
@@ -23,17 +23,51 @@ ipcMain.on('adbHome', () => {
     execSync("adb shell input keyevent 3");
 })
 
+ipcMain.on('adbInstall', () => {
+    const files = dialog.showOpenDialog(mainWindow, {
+        properties: ['openFile'],
+        filters: [
+            {
+                name: 'Android Application',
+                extensions: ['apk']
+            }
+        ]
+    });
+
+    if (files) {
+        console.log(files[0]);
+        execSync(`adb push ${files[0]} /data/local/tmp/app.apk`);
+        let ret = execSync("adb shell /system/bin/pm install -t /data/local/tmp/app.apk");
+        console.log(ret.toString());
+        ret = execSync("adb shell /system/bin/rm /data/local/tmp/app.apk");
+        console.log(ret.toString());
+    }
+});
+
+ipcMain.on('adbSecure', (event, secure) => {
+    execSync(`adb shell settings put secure install_non_market_apps ${secure?0:1}`);
+    secure = execSync("adb shell settings get secure install_non_market_apps");
+    mainWindow.webContents.send('secure', secure[0]==0x31?false:true);
+});
+
 ipcMain.on('adbSwipe', (event, x1, y1, x2, y2) => {
     execSync(`adb shell input swipe ${x1} ${y1} ${x2} ${y2}`);
 });
 
 ipcMain.on('adbConnect', (event, ip, port) => {
-    let data = execSync(`adb kill-server && adb connect ${ip}:${port}`);
-    mainWindow.webContents.send('connect', data);
-    if (data.includes('connected')) {
-        captureScreen();
-        setInterval(captureScreen, 3000);
-    }
+    exec(`adb kill-server && adb connect ${ip}:${port}`, (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            mainWindow.webContents.send('connect', data);
+            if (data.includes('connected')) {
+                let secure = execSync("adb shell settings get secure install_non_market_apps");
+                mainWindow.webContents.send('secure', secure[0]==0x31?false:true);
+                captureScreen();
+                setInterval(captureScreen, 3000);
+            }
+        }
+    });
 })
 
 const captureScreen = () => {

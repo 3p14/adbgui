@@ -10,17 +10,20 @@
     <body>
         <div id="app" class="screen">
             <div v-if="connected && image">
-                <img width="720" height="480" draggable="false" :src="image" @click.right="androidReturn" @mousedown.left="androidSwipeStart" @mouseup.left="androidSwipeStop" alt="image" />
+                <img width="720" height="480" draggable="false" :src="image" @mousedown="androidSwipeStart" @mouseup="androidSwipeStop" alt="image" />
                 <div class="level is-mobile">
-                    <div class="level-left">
-                        <div class="container">
-                            <img src="../images/icons8-back-60.png" alt="BACK" class="level-item">
-                        </div>
+                    <div  class="level-item">
+                        <img src="../images/icons8-back-60.png" alt="BACK" @click="androidReturn">
                     </div>
-                    <div class="level-right">
-                        <div class="container">
-                            <img src="../images/icons8-home-60.png" alt="HOME" class="level-item">
-                        </div>
+                    <div class="level-item">
+                        <img v-if="secure" src="../images/icons8-lock-filled-100.png" alt="SECURE" @click="androidSecure" width="60" height="60">
+                        <img v-else src="../images/icons8-unlock-filled-100.png" alt="SECURE" @click="androidSecure" width="60" height="60">
+                    </div>
+                    <div class="level-item">
+                        <img src="../images/icons8-document-60.png" alt="FILE" @click="androidInstall">
+                    </div>
+                    <div class="level-item">
+                        <img src="../images/icons8-home-60.png" alt="HOME" @click="androidHome">
                     </div>
                 </div>
             </div>
