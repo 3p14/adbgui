@@ -1,18 +1,39 @@
 {
   "name": "adbgui",
   "version": "1.0.0",
-  "description": "",
+  "description": "Adb gui for screenless",
+  "productName": "ADBGUI",
   "main": "app/main.js",
+  "build": {
+    "appId": "com.3p14.app",
+    "mac": {
+      "icon": "icons/adbgui.icns",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "icon": "icons/adbgui.ico",
+      "target": ["nsis", "zip"]
+    },
+    "linux": {
+      "icon": "icons/",
+      "target": ["AppImage", "deb"]
+    }
+  },
   "scripts": {
     "start": "electron .",
+    "build": "npm run build-mac && npm run build-win && npm run build-linux",
+    "build-mac": "electron-packager . --prune=true --asar --overwrite --out=build --platform=darwin --icon=images/adbgui.icns",
+    "build-win": "electron-packager . --prune=true --asar --overwrite --out=build --platform=win32 --icon=images/adbgui.ico",
+    "build-linux": "electron-packager . --prune=true --asar --overwrite --out=build --platform=linux --icon=images/adbgui.png",
+    "dist": "electron-builder -wml",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Chong He <chong.he07@gmail.com>",
   "license": "ISC",
-  "dependencies": {
-    "bulma": "^0.7.2",
+  "devDependencies": {
     "electron": "^3.0.10",
-    "vue": "^2.5.17"
+    "electron-builder": "^20.38.2",
+    "electron-packager": "^13.0.0"
   }
 }
