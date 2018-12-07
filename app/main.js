@@ -9,6 +9,7 @@ let curr = 0;
 
 ipcMain.on('clean', () => {
     exec(`rm -rf images/screen${prev}.png`);
+    captureScreen();
 })
 
 ipcMain.on('adbTap', (event, x, y) => {
@@ -35,7 +36,6 @@ ipcMain.on('adbInstall', () => {
     });
 
     if (files) {
-        console.log(files[0]);
         execSync(`adb push ${files[0]} /data/local/tmp/app.apk`);
         let ret = execSync("adb shell /system/bin/pm install -t /data/local/tmp/app.apk");
         console.log(ret.toString());
@@ -64,7 +64,6 @@ ipcMain.on('adbConnect', (event, ip, port) => {
                 let secure = execSync("adb shell settings get secure install_non_market_apps");
                 mainWindow.webContents.send('secure', secure[0]==0x31?false:true);
                 captureScreen();
-                setInterval(captureScreen, 3000);
             }
         }
     });

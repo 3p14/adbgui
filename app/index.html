@@ -30,26 +30,26 @@
             <div v-else id="adb" class="hero">
                 <div class="hero-body">
                     <div class="container">
-                        <div class="columns is-centered">
-                            <div class="column is-mobile">
+                        <div class="columns  is-mobile is-centered">
+                            <div class="column is-6">
                                 <form class="box">
                                     <div class="field has-text-centered">
                                         <img src="../images/Android-320x320.png" width="120" height="120" />
                                     </div>
                                     <div class="field">
-                                        <label class="label">IP/Domain</label>
+                                        <label class="label">IP/DOMAIN</label>
                                         <div class="control">
                                             <input v-model="androidAddr" type="text" class="input" placeholder="e.g. 192.168.1.100" required>
                                         </div>
                                     </div>
                                     <div class="field">
-                                        <label class="label">Port</label>
+                                        <label class="label">PORT</label>
                                         <div class="control">
                                             <input v-model.number="androidPort" type="number" class="input" placeholder="e.g. 5555">
                                         </div>
                                     </div>
                                     <div class="field">
-                                        <button class="button is-success" @click.prevent="androidConnect">
+                                        <button class="button is-fullwidth is-dark" @click.prevent="androidConnect">
                                             {{ connectProgress }}
                                         </button>
                                     </div>

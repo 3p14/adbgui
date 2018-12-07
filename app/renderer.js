@@ -2,7 +2,7 @@ const {ipcRenderer} = require('electron');
 
 var data = {
     image: null,
-    connectProgress: 'connect',
+    connectProgress: 'CONNECT',
     connected: 0,
     errmsg: null,
     secure: true,
@@ -41,7 +41,7 @@ var app = new Vue({
             }
         },
         androidConnect: function() {
-            this.connectProgress = 'connecting...';
+            this.connectProgress = 'CONNECTING...';
             ipcRenderer.send('adbConnect', this.androidAddr, this.androidPort || 5555);
         }
     }
