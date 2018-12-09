@@ -13,7 +13,10 @@
                 <img width="720" height="480" draggable="false" :src="image" @mousedown="androidSwipeStart" @mouseup="androidSwipeStop" alt="image" />
                 <div class="level is-mobile">
                     <div  class="level-item">
-                        <img src="../images/icons8-back-60.png" alt="BACK" @click="androidReturn">
+                        <img src="../images/icons8-undo-60.png" alt="BACK" @click="androidReturn">
+                    </div>
+                    <div  class="level-item">
+                        <img src="../images/icons8-back-60.png" alt="BACK" @click="androidBack">
                     </div>
                     <div class="level-item">
                         <img v-if="secure" src="../images/icons8-lock-filled-100.png" alt="SECURE" @click="androidSecure" width="60" height="60">

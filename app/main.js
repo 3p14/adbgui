@@ -9,7 +9,7 @@ let curr = 0;
 
 ipcMain.on('clean', () => {
     exec(`rm -rf images/screen${prev}.png`);
-    captureScreen();
+    setTimeout(captureScreen, 2000);
 })
 
 ipcMain.on('adbTap', (event, x, y) => {
@@ -17,6 +17,11 @@ ipcMain.on('adbTap', (event, x, y) => {
 });
 
 ipcMain.on('adbReturn', () => {
+    execSync("adb shell input keyevent 4");
+    execSync("adb shell input keyevent 4");
+});
+
+ipcMain.on('adbBack', () => {
     execSync("adb shell input keyevent 4");
 });
 

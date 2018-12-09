@@ -17,6 +17,9 @@ var app = new Vue({
         androidReturn: function(event) {
             ipcRenderer.send('adbReturn');
         },
+        androidBack: function(event) {
+            ipcRenderer.send('adbBack');
+        },
         androidHome: function() {
             ipcRenderer.send('adbHome');
         },
@@ -65,6 +68,5 @@ ipcRenderer.on('connect', (event, response) => {
 });
 
 ipcRenderer.on('secure', (event, secure) => {
-    console.log(secure);
     data.secure = secure;
 })
