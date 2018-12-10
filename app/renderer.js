@@ -7,7 +7,8 @@ var data = {
     errmsg: null,
     secure: true,
     androidAddr: '',
-    androidPort: null
+    androidPort: null,
+    androidRefresh: null
 };
 
 var app = new Vue({
@@ -45,7 +46,7 @@ var app = new Vue({
         },
         androidConnect: function() {
             this.connectProgress = 'CONNECTING...';
-            ipcRenderer.send('adbConnect', this.androidAddr, this.androidPort || 5555);
+            ipcRenderer.send('adbConnect', this.androidAddr, this.androidPort||5555, this.androidRefresh||2);
         }
     }
 });

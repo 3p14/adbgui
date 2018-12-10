@@ -12,9 +12,12 @@ let curr = null;
 
 let tmpDir = null;
 
+let captureTimeout = null;
+let refresh = 2000;
+
 ipcMain.on('clean', () => {
     exec(`rm -rf ${prev}`);
-    setTimeout(captureScreen, 2000);
+    captureTimeout = setTimeout(captureScreen, refresh);
 })
 
 ipcMain.on('adbTap', (event, x, y) => {
@@ -64,7 +67,8 @@ ipcMain.on('adbSwipe', (event, x1, y1, x2, y2) => {
     execSync(`adb shell input swipe ${x1} ${y1} ${x2} ${y2}`);
 });
 
-ipcMain.on('adbConnect', (event, ip, port) => {
+ipcMain.on('adbConnect', (event, ip, port, re) => {
+    refresh = re * 1000;
     exec(`adb kill-server && adb connect ${ip}:${port}`, (err, data) => {
         if (err) {
             console.log(err);
@@ -111,6 +115,13 @@ app.on('ready', () => {
         mainWindow.show();
     });
     mainWindow.on('close', () => {
+        clearTimeout(captureTimeout);
         mainWindow = null;
     });
+});
+
+app.on('quit', () => {
+    if (tmpDir != null) {
+        tmpDir.removeCallback();
+    }
 });

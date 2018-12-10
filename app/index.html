@@ -52,6 +52,12 @@
                                         </div>
                                     </div>
                                     <div class="field">
+                                        <label class="label">REFRESH</label>
+                                        <div class="control">
+                                            <input v-model.number="androidRefresh" type="number" class="input" placeholder="e.g. 2">
+                                        </div>
+                                    </div>
+                                    <div class="field">
                                         <button class="button is-fullwidth is-dark" @click.prevent="androidConnect">
                                             {{ connectProgress }}
                                         </button>
