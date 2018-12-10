@@ -55,7 +55,7 @@ const renderScreen = (image) => {
 }
 
 ipcRenderer.on('capture', (event, curr) => {
-    renderScreen(`../images/screen${curr}.png`);
+    renderScreen(curr);
     ipcRenderer.send('clean');
 });
 

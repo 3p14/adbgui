@@ -1,14 +1,19 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const {exec, execSync} = require('child_process');
 const path = require('path');
+const tmp = require('tmp');
 
 let mainWindow = null;
 
-let prev = 0;
-let curr = 0;
+let seq = 0;
+
+let prev = "";
+let curr = null;
+
+let tmpDir = null;
 
 ipcMain.on('clean', () => {
-    exec(`rm -rf images/screen${prev}.png`);
+    exec(`rm -rf ${prev}`);
     setTimeout(captureScreen, 2000);
 })
 
@@ -68,6 +73,7 @@ ipcMain.on('adbConnect', (event, ip, port) => {
             if (data.includes('connected')) {
                 let secure = execSync("adb shell settings get secure install_non_market_apps");
                 mainWindow.webContents.send('secure', secure[0]==0x31?false:true);
+                tmpDir = tmp.dirSync().name;
                 captureScreen();
             }
         }
@@ -78,8 +84,9 @@ const captureScreen = () => {
     exec(`adb shell screencap -p /sdcard/screen.png`, (err) => {
         if (!err) {
             prev = curr;
-            curr++;
-            exec(`adb pull /sdcard/screen.png images/screen${curr}.png`, (err) => {
+            seq++;
+            curr = path.join(tmpDir, `screen${seq}.png`);
+            exec(`adb pull /sdcard/screen.png ${curr}`, (err) => {
                 if (!err) {
                     mainWindow.webContents.send('capture', curr);
                 }
